@@ -1,0 +1,91 @@
+
+.menu{
+  background-color: rgb(177, 176, 176);
+  color: white;
+
+  text-align: center;
+
+  padding-top: 2rem;
+}
+
+.defaultView-item{
+  background-color: transparent;
+  border-width: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  padding: 1rem;
+
+  font-family: 'poppins';
+  font-size: 1.5rem;
+}
+
+.defaultView-menu{
+  display: flex;
+  flex-direction: column;
+
+}
+
+.index{
+  background-color: gainsboro;
+
+  text-align: center  ;
+
+  font-family: 'roboto';
+  font-weight: bold;
+  font-size: 2rem;
+
+  padding: 1rem;
+}
+
+
+.body{
+  height: 87vh;
+}
+
+.taskMenu{
+  padding-top: 2rem;
+}
+
+.btn-priority{
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.task-layout{
+  padding: 1rem 0;
+}
+
+.form-btn-layout{
+  display: flex;
+  justify-content: center;
+  padding-top: 3rem;
+}
+
+.task{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(236, 236, 236);
+  border-radius: 10px;
+}
+
+.edit-img{
+  height: 1.5rem;
+  width: 1.5rem;
+  cursor: pointer;
+}
+
+.edit{
+  display: flex;
+  padding: 0 1.5rem;
+}
+
+.task-title{
+  padding: 0 1rem;
+  font-weight: 400;
+  font-size: 1.5rem;
+}

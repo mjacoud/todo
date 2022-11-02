@@ -1,0 +1,77 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+ul{
+  list-style-type: none;
+}
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+@font-face {
+  font-family: 'poppinsbold';
+  src: local('poppinsbold'),
+  url('poppins-bold-webfont.woff2') format('woff2'),
+       url('poppins-bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+@font-face {
+  font-family: 'poppinsmedium';
+  src: local('poppinsmedium'),
+  url('poppins-medium-webfont.woff2') format('woff2'),
+       url('poppins-medium-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+@font-face {
+  font-family: 'poppinsregular';
+  src: local('poppinsregular'),
+  url('poppins-regular-webfont.woff2') format('woff2'),
+       url('poppins-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+@font-face {
+  font-family: 'robotobold';
+  src: local('robotobold'),
+  url('roboto-bold-webfont.woff2') format('woff2'),
+       url('roboto-bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+@font-face {
+  font-family: 'robotomedium';
+  src: local('robotomedium'),
+  url('roboto-medium-webfont.woff2') format('woff2'),
+       url('roboto-medium-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+
+@font-face {
+  font-family: 'robotoregular';
+  src:local('robotoregular'),
+   url('roboto-regular-webfont.woff2') format('woff2'),
+       url('roboto-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
