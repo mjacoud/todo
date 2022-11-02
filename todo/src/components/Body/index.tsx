@@ -60,7 +60,7 @@ export function Body() {
           </Col>
         </Row>
       </Container>
-
+/*******************************MODAL******************* */
       <Modal
         title="Add New Task"
         show={isOpenModal}
@@ -79,7 +79,7 @@ export function Body() {
               name="taskTitle"
               placeholder="Add a name for your task"
               required
-              onChange={(e) => console.log(e.target.value)}
+
             ></Form.Control>
             <div className="task-layout">
               <Form.Text>Task Description</Form.Text>
