@@ -19,19 +19,66 @@ import { TaskList } from "../TaskList";
 
 import '../Body/style.css';
 
+/* Date Selector */
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+
 /********************************************COMPONENT****************************** */
 
 export function Body() {
+
+/*-------------View Selection-------------*/
+
   const [view, setView] = React.useState("Home");
+
+  /*------------Modal Display------------*/
+
   const [isOpenModal, setIsOpenModal] = React.useState(false);
 
-  const [tasks,SetTasks] = React.useState([{
+  /*------------Modal Inputs-------------*/
+
+  /*Input Title*/
+  const [inputTitle,setInputTitle] = React.useState('')
+
+  const handleInputTitle = (e) => {setInputTitle(e.target.value)}
+
+  /*Input Description*/
+
+  const [inputDescription,setInputDescription] = React.useState('')
+
+  const handleInputDescription = (e) => {setInputDescription(e.target.value)}
+
+  /*Input Date*/
+  const [inputDate,setInputDate] = React.useState(null)
+
+
+  /*input Priority */
+
+  const [inputPriority,setInputPriority] = React.useState('')
+
+  /*Reset Modal */
+
+  const resetModal = () => {setInputTitle(''),setInputDate(null),setInputDescription(''),setInputPriority('')}
+/*add task*/
+
+const handleAddTask = (inputTitle) => {setTasks([...tasks,{
+  id:'2',
+  taskTitle:inputTitle,
+  taskDescription:'Fugir'
+  }])}
+
+/* Task List */
+
+  const [tasks,setTasks] = React.useState([{
     id:'1',
     taskTitle:'correr',
     taskDescription:'Walks fast'
   }
   ])
 
+  /* TSX */
 
   return (
     <>
@@ -60,8 +107,10 @@ export function Body() {
           </Col>
         </Row>
       </Container>
-/*******************************MODAL******************* */
+
+
       <Modal
+      /******************************MODAL********************/
         title="Add New Task"
         show={isOpenModal}
         onHide={() => setIsOpenModal(false)}
@@ -69,7 +118,8 @@ export function Body() {
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            console.log(event.target[0].value);
+            handleAddTask(inputTitle);
+            resetModal()
           }}
         >
           <Form.Group controlId="newTask">
@@ -79,7 +129,8 @@ export function Body() {
               name="taskTitle"
               placeholder="Add a name for your task"
               required
-
+              onChange={handleInputTitle}
+              value={inputTitle}
             ></Form.Control>
             <div className="task-layout">
               <Form.Text>Task Description</Form.Text>
@@ -89,23 +140,28 @@ export function Body() {
                 rows={3}
                 placeholder="Add a description for your task"
                 required
+                onChange={handleInputDescription}
+              value={inputDescription}
               ></Form.Control>
             </div>
             <Row>
               <Col>
                 <Form.Text>Due Date</Form.Text>
-                <Form.Control
-                  type="date"
-                  name="taskDate"
-                  required
-                  min=""
-                ></Form.Control>
+
+                <DatePicker
+                selected={inputDate}
+                onChange={date => setInputDate(date)}
+                required
+                dateFormat="dd/MM/yyyy"
+                minDate={new Date()}
+                value={inputDate}
+                />
               </Col>
               <Col className="btn-priority">
                 <ButtonGroup size="lg" aria-label="Priority">
-                  <Button variant="success">Low</Button>
-                  <Button variant="warning">Medium</Button>
-                  <Button variant="danger">High</Button>
+                  <Button onClick={()=>setInputPriority('green')} variant="success">Low</Button>
+                  <Button onClick={()=>setInputPriority('yellow')}variant="warning">Medium</Button>
+                  <Button onClick={()=>setInputPriority('red')}variant="danger">High</Button>
                 </ButtonGroup>
               </Col>
             </Row>
