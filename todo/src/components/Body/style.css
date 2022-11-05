@@ -73,10 +73,23 @@
   border-radius: 10px;
 }
 
+.priority-green{
+  border-left: 10px green solid
+}
+
+.priority-yellow{
+  border-left: 10px yellow solid
+}
+
+.priority-red{
+  border-left: 10px red solid
+}
+
 .edit-img{
   height: 1.5rem;
   width: 1.5rem;
   cursor: pointer;
+
 }
 
 .edit{
@@ -84,8 +97,19 @@
   padding: 0 1.5rem;
 }
 
+.edit-layout{
+  padding: 0 1rem;
+}
 .task-title{
   padding: 0 1rem;
   font-weight: 400;
   font-size: 1.5rem;
 }
+
+.format-date{
+  font-size: 1.25rem;
+  padding: 0.75rem 1rem 0 0;
+  font-weight: 400;
+  font-family: 'roboto';
+}
+

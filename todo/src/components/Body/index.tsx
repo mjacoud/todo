@@ -24,8 +24,23 @@ import '../Body/style.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+import { format } from 'date-fns'
 
-/********************************************COMPONENT****************************** */
+/* Random ID Generator */
+
+import { v4 as uuidv4 } from 'uuid'
+import { constants } from "zlib";
+
+/* Interfaces */
+
+interface task{
+  id:string,
+  taskTitle:string,
+  taskDescription:string,
+  priority:string
+}
+
+/*******************COMPONENT****************************** */
 
 export function Body() {
 
@@ -51,8 +66,16 @@ export function Body() {
   const handleInputDescription = (e) => {setInputDescription(e.target.value)}
 
   /*Input Date*/
+
   const [inputDate,setInputDate] = React.useState(null)
 
+  /*Format date */
+
+  const handleDateFormat = (date) => {
+    let dateToString =date.toString()
+    let formatDate = dateToString.slice(4,10)
+    return formatDate
+  }
 
   /*input Priority */
 
@@ -60,23 +83,30 @@ export function Body() {
 
   /*Reset Modal */
 
-  const resetModal = () => {setInputTitle(''),setInputDate(null),setInputDescription(''),setInputPriority('')}
-/*add task*/
+  const resetModal = () => {setInputTitle(''),setInputDate(null),setInputDescription(''),setInputPriority(''),setIsOpenModal(false)}
 
-const handleAddTask = (inputTitle) => {setTasks([...tasks,{
-  id:'2',
-  taskTitle:inputTitle,
-  taskDescription:'Fugir'
-  }])}
 
-/* Task List */
+  /* Task List */
 
   const [tasks,setTasks] = React.useState([{
-    id:'1',
+    id:uuidv4(),
     taskTitle:'correr',
-    taskDescription:'Walks fast'
-  }
-  ])
+    taskDescription:'Walk Fast',
+    priority:'priority-green',
+    date:'11/10'}])
+
+  /*add task*/
+
+  const handleAddTask = (inputTitle,inputDescription,inputPriority,inputDate) => {setTasks([...tasks,{
+    id:uuidv4(),
+    taskTitle:inputTitle,
+    taskDescription:inputDescription,
+    priority:inputPriority,
+    date:handleDateFormat(inputDate)
+    }])}
+
+
+    /* Complete Task */
 
   /* TSX */
 
@@ -118,9 +148,11 @@ const handleAddTask = (inputTitle) => {setTasks([...tasks,{
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            handleAddTask(inputTitle);
-            resetModal()
+            handleAddTask(inputTitle,inputDescription,inputPriority,inputDate);
+            resetModal();
+
           }}
+
         >
           <Form.Group controlId="newTask">
             <Form.Text>Task Name</Form.Text>
@@ -155,16 +187,17 @@ const handleAddTask = (inputTitle) => {setTasks([...tasks,{
                 dateFormat="dd/MM/yyyy"
                 minDate={new Date()}
                 value={inputDate}
+
                 />
               </Col>
               <Col className="btn-priority">
                 <ButtonGroup size="lg" aria-label="Priority">
-                  <Button onClick={()=>setInputPriority('green')} variant="success">Low</Button>
-                  <Button onClick={()=>setInputPriority('yellow')}variant="warning">Medium</Button>
-                  <Button onClick={()=>setInputPriority('red')}variant="danger">High</Button>
+                  <Button onClick={()=>setInputPriority('priority-green')} variant="success">Low</Button>
+                  <Button onClick={()=>setInputPriority('priority-yellow')}variant="warning">Medium</Button>
+                  <Button onClick={()=>setInputPriority('priority-red')}variant="danger">High</Button>
                 </ButtonGroup>
               </Col>
-            </Row>
+              </Row>
           </Form.Group>
           <div className="form-btn-layout">
             <Button variant="primary" type="submit" size="lg">
