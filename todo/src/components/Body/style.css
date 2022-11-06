@@ -106,6 +106,18 @@
   font-size: 1.5rem;
 }
 
+.task-completed{
+  color: gray;
+  text-decoration: line-through;
+}
+
+.gambiarra{
+  width: 2rem;
+  position: absolute;
+  height: 2rem;
+  display: none;
+}
+
 .format-date{
   font-size: 1.25rem;
   padding: 0.75rem 1rem 0 0;
