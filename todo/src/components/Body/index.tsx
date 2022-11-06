@@ -14,99 +14,142 @@ import {
 import { Modal } from "../Modal";
 
 import { Task } from "../Task";
-import { NewTask } from "../TaskConstructor";
 import { TaskList } from "../TaskList";
 
-import '../Body/style.css';
+import "../Body/style.css";
 
 /* Date Selector */
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { format } from 'date-fns'
+import { format } from "date-fns";
 
 /* Random ID Generator */
 
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 import { constants } from "zlib";
-
-/* Interfaces */
-
-interface task{
-  id:string,
-  taskTitle:string,
-  taskDescription:string,
-  priority:string
-}
 
 /*******************COMPONENT****************************** */
 
 export function Body() {
-
-/*-------------View Selection-------------*/
+  /*-------------View Selection-------------*/
 
   const [view, setView] = React.useState("Home");
 
-  /*------------Modal Display------------*/
+  /*------------ADD TASK Modal Display------------*/
 
-  const [isOpenModal, setIsOpenModal] = React.useState(false);
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = React.useState(false);
 
   /*------------Modal Inputs-------------*/
 
   /*Input Title*/
-  const [inputTitle,setInputTitle] = React.useState('')
+  const [inputTitle, setInputTitle] = React.useState("");
 
-  const handleInputTitle = (e) => {setInputTitle(e.target.value)}
+  const handleInputTitle = (e) => {
+    setInputTitle(e.target.value);
+  };
 
   /*Input Description*/
 
-  const [inputDescription,setInputDescription] = React.useState('')
+  const [inputDescription, setInputDescription] = React.useState("");
 
-  const handleInputDescription = (e) => {setInputDescription(e.target.value)}
+  const handleInputDescription = (e) => {
+    setInputDescription(e.target.value);
+  };
 
   /*Input Date*/
 
-  const [inputDate,setInputDate] = React.useState(null)
+  const [inputDate, setInputDate] = React.useState(null);
 
   /*Format date */
 
   const handleDateFormat = (date) => {
-    let dateToString =date.toString()
-    let formatDate = dateToString.slice(4,10)
-    return formatDate
-  }
+    let dateToString = date.toString();
+    let formatDate = dateToString.slice(4, 10);
+    return formatDate;
+  };
 
   /*input Priority */
 
-  const [inputPriority,setInputPriority] = React.useState('')
+  const [inputPriority, setInputPriority] = React.useState("");
+
+  /* Set task Status */
+
+  const [taskStatus, setTaskStatus] = React.useState("false");
 
   /*Reset Modal */
 
-  const resetModal = () => {setInputTitle(''),setInputDate(null),setInputDescription(''),setInputPriority(''),setIsOpenModal(false)}
-
+  const resetModal = () => {
+    setInputTitle(""),
+      setInputDate(null),
+      setInputDescription(""),
+      setInputPriority(""),
+      setIsAddTaskModalOpen(false);
+  };
 
   /* Task List */
 
-  const [tasks,setTasks] = React.useState([{
-    id:uuidv4(),
-    taskTitle:'correr',
-    taskDescription:'Walk Fast',
-    priority:'priority-green',
-    date:'11/10'}])
+  const [tasks, setTasks] = React.useState([
+    {
+      id: uuidv4(),
+      taskTitle: "correr",
+      taskDescription: "Walk Fast",
+      priority: "priority-green",
+      date: "Nov 10",
+      completed: false,
+    },
+  ]);
 
-  /*add task*/
+  /* handle add task*/
 
-  const handleAddTask = (inputTitle,inputDescription,inputPriority,inputDate) => {setTasks([...tasks,{
-    id:uuidv4(),
-    taskTitle:inputTitle,
-    taskDescription:inputDescription,
-    priority:inputPriority,
-    date:handleDateFormat(inputDate)
-    }])}
+  const handleAddTask = (
+    inputTitle,
+    inputDescription,
+    inputPriority,
+    inputDate,
+    taskStatus
+  ) => {
+    setTasks([
+      ...tasks,
+      {
+        id: uuidv4(),
+        taskTitle: inputTitle,
+        taskDescription: inputDescription,
+        priority: inputPriority,
+        date: handleDateFormat(inputDate),
+        completed: taskStatus,
+      },
+    ]);
+  };
+
+  /* handle task Status */
+
+  /*
+REVIEW FOR HELP
 
 
-    /* Complete Task */
+const handleTaskStatus = (id) => {
+    const refreshTask = tasks.map((task) => {
+      if (task.id == id && task.completed == false) {
+        return { ...task, completed: true };
+      }
+      if (task.id == id && task.completed == true) {
+        return { ...task, completed: false };
+      } else {
+        return task;
+      }
+    });
+    setTasks(refreshTask);
+  };
+ */
+
+  /* handle task deletion */
+
+  const handleTaskDeletion = (id) => {
+    const refreshTask = tasks.filter((task) => task.id != id);
+    setTasks(refreshTask);
+  };
 
   /* TSX */
 
@@ -128,31 +171,34 @@ export function Body() {
               <Button
                 variant="secondary"
                 size="lg"
-                onClick={() => setIsOpenModal(true)}
+                onClick={() => setIsAddTaskModalOpen(true)}
               >
                 + Add Task
               </Button>
-              <TaskList tasks={tasks}/>
+              <TaskList tasks={tasks} handleTaskDeletion={handleTaskDeletion} />
             </Stack>
           </Col>
         </Row>
       </Container>
 
-
       <Modal
-      /******************************MODAL********************/
+        /*************MODAL ADD TASKS********************/
         title="Add New Task"
-        show={isOpenModal}
-        onHide={() => setIsOpenModal(false)}
+        show={isAddTaskModalOpen}
+        onHide={() => setIsAddTaskModalOpen(false)}
       >
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            handleAddTask(inputTitle,inputDescription,inputPriority,inputDate);
+            handleAddTask(
+              inputTitle,
+              inputDescription,
+              inputPriority,
+              inputDate,
+              taskStatus
+            );
             resetModal();
-
           }}
-
         >
           <Form.Group controlId="newTask">
             <Form.Text>Task Name</Form.Text>
@@ -173,7 +219,7 @@ export function Body() {
                 placeholder="Add a description for your task"
                 required
                 onChange={handleInputDescription}
-              value={inputDescription}
+                value={inputDescription}
               ></Form.Control>
             </div>
             <Row>
@@ -181,23 +227,37 @@ export function Body() {
                 <Form.Text>Due Date</Form.Text>
 
                 <DatePicker
-                selected={inputDate}
-                onChange={date => setInputDate(date)}
-                required
-                dateFormat="dd/MM/yyyy"
-                minDate={new Date()}
-                value={inputDate}
-
+                  selected={inputDate}
+                  onChange={(date) => setInputDate(date)}
+                  required
+                  dateFormat="dd/MM/yyyy"
+                  minDate={new Date()}
+                  value={inputDate}
                 />
               </Col>
               <Col className="btn-priority">
                 <ButtonGroup size="lg" aria-label="Priority">
-                  <Button onClick={()=>setInputPriority('priority-green')} variant="success">Low</Button>
-                  <Button onClick={()=>setInputPriority('priority-yellow')}variant="warning">Medium</Button>
-                  <Button onClick={()=>setInputPriority('priority-red')}variant="danger">High</Button>
+                  <Button
+                    onClick={() => setInputPriority("priority-green")}
+                    variant="success"
+                  >
+                    Low
+                  </Button>
+                  <Button
+                    onClick={() => setInputPriority("priority-yellow")}
+                    variant="warning"
+                  >
+                    Medium
+                  </Button>
+                  <Button
+                    onClick={() => setInputPriority("priority-red")}
+                    variant="danger"
+                  >
+                    High
+                  </Button>
                 </ButtonGroup>
               </Col>
-              </Row>
+            </Row>
           </Form.Group>
           <div className="form-btn-layout">
             <Button variant="primary" type="submit" size="lg">
