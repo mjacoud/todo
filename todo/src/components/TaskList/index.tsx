@@ -8,6 +8,7 @@ export const TaskList = ({
   tasks,
   handleTaskStatus,
   handleTaskDeletion,
+  handleTaskPriorityChange,
 }: any) => {
   return (
     <>
@@ -16,6 +17,7 @@ export const TaskList = ({
           tasks={tasks}
           handleTaskStatus={handleTaskStatus}
           handleTaskDeletion={handleTaskDeletion}
+          handleTaskPriorityChange={handleTaskPriorityChange}
           key={uuidv4()}
         />
       ))}

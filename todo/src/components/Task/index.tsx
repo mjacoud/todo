@@ -7,10 +7,16 @@ import {
   Stack,
   Form,
   ButtonGroup,
-  Modal,
 } from "react-bootstrap";
 
-export const Task = ({ tasks, handleTaskStatus, handleTaskDeletion }) => {
+import { Modal } from "../Modal";
+
+export const Task = ({
+  tasks,
+  handleTaskStatus,
+  handleTaskDeletion,
+  handleTaskPriorityChange,
+}) => {
   const [isChecked, setIsChecked] = useState(false);
 
   /*------------EDIT TASK Modal Display------------*/
@@ -26,7 +32,6 @@ export const Task = ({ tasks, handleTaskStatus, handleTaskDeletion }) => {
             onChange={(e) => setIsChecked(e.target.checked)}
             checked={isChecked}
           ></input>
-          <button className="gambiarra"></button>
           <div className={`task-title ${isChecked ? "task-completed" : ""}`}>
             {tasks.taskTitle}
           </div>
@@ -55,73 +60,71 @@ export const Task = ({ tasks, handleTaskStatus, handleTaskDeletion }) => {
           </a>
         </div>
       </div>
-      {/***************** EDIT MODAL ***************/}
+      {/* {/***************** EDIT MODAL ***************/}
 
       <Modal
-        title="Edit Task"
+        title={tasks.taskTitle}
         show={isEditTaskModalOpen}
         onHide={() => setIsEditTaskModalOpen(false)}
+        centered
       >
         <form
           onSubmit={(event) => {
             event.preventDefault();
           }}
         >
-          <Form>
-            <Form.Group as={Row} className="mb-3" controlId="editTaskTitle">
-              <Form.Label column sm="2" className="task-completed">
-                Title
-              </Form.Label>
-              <Col sm="10">
-                <Form.Control plaintext readOnly value={tasks.taskTitle} />
-              </Col>
-            </Form.Group>
+          <Form.Group as={Row} className="mb-3" controlId="editTaskDescription">
+            <Form.Label column sm="2" className="edit-label">
+              Description
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control plaintext readOnly value={tasks.taskDescription} />
+            </Col>
+          </Form.Group>
 
-            <Form.Group
-              as={Row}
-              className="mb-3"
-              controlId="editTaskDescription"
-            >
-              <Form.Label column sm="2">
-                Description
-              </Form.Label>
-              <Col sm="10">
-                <Form.Control
-                  plaintext
-                  readOnly
-                  value={tasks.taskDescription}
-                />
-              </Col>
-            </Form.Group>
-          </Form>
+          <Form.Group as={Row} className="mb-3" controlId="editTaskDate">
+            <Form.Label column sm="2" className="edit-label">
+              Date
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control plaintext readOnly value={tasks.date} />
+            </Col>
+          </Form.Group>
 
-          <Form>
-            <Form.Group as={Row} className="mb-3" controlId="editTaskPriority">
-              <Form.Label column sm="2">
-                Priority
-              </Form.Label>
-              <Col sm="10">
-                <Form.Control plaintext readOnly value={tasks.priority} />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3" controlId="editTaskDate">
-              <Form.Label column sm="2">
-                Date
-              </Form.Label>
-              <Col sm="10">
-                <Form.Control plaintext readOnly value={tasks.date} />
-              </Col>
-            </Form.Group>
-            <Form.Group as={Row} className="mb-3" controlId="editTaskStatus">
-              <Form.Label column sm="2">
-                Status
-              </Form.Label>
-              <Col sm="10">
-                <Form.Control plaintext readOnly value={tasks.completed} />
-              </Col>
-            </Form.Group>
-          </Form>
+          <Form.Group as={Row} className="mb-3" controlId="editTaskStatus">
+            <Form.Label column sm="2" className="edit-label">
+              Status
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control plaintext readOnly value={tasks.completed} />
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} className="mb-3" controlId="editTaskPriority">
+            <Col className="btn-priority">
+              <ButtonGroup size="lg" aria-label="Priority">
+                <Button
+                  onClick={() => handleTaskPriorityChange("priority-green")}
+                  variant="success"
+                >
+                  Low
+                </Button>
+                <Button
+                  onClick={() => handleTaskPriorityChange("priority-yellow")}
+                  variant="warning"
+                >
+                  Medium
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleTaskPriorityChange("priority-red");
+                  }}
+                  variant="danger"
+                >
+                  High
+                </Button>
+              </ButtonGroup>
+            </Col>
+          </Form.Group>
         </form>
       </Modal>
     </>

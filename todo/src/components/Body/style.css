@@ -111,12 +111,6 @@
   text-decoration: line-through;
 }
 
-.gambiarra{
-  width: 2rem;
-  position: absolute;
-  height: 2rem;
-  display: none;
-}
 
 .format-date{
   font-size: 1.25rem;
@@ -125,3 +119,11 @@
   font-family: 'roboto';
 }
 
+.edit-label{
+  font-family: 'roboto';
+  font-weight: 700;
+}
+
+.edit-modal-title{
+padding:0.5rem 0 0 1.25rem
+}

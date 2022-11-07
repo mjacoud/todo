@@ -128,7 +128,6 @@ export function Body() {
   /*
 REVIEW FOR HELP
 
-
 const handleTaskStatus = (id) => {
     const refreshTask = tasks.map((task) => {
       if (task.id == id && task.completed == false) {
@@ -142,12 +141,29 @@ const handleTaskStatus = (id) => {
     });
     setTasks(refreshTask);
   };
- */
+
 
   /* handle task deletion */
 
   const handleTaskDeletion = (id) => {
     const refreshTask = tasks.filter((task) => task.id != id);
+    setTasks(refreshTask);
+  };
+
+  /* handle task priority change */
+
+  const handleTaskPriorityChange = (color) => {
+    const refreshTask: any = tasks.map((task) => {
+      if (task.priority != color) {
+        return { ...task, priority: color };
+      }
+      if (task.priority != color) {
+        return { ...task, priority: color };
+      }
+      if (task.priority != color) {
+        return { ...task, priority: color };
+      }
+    });
     setTasks(refreshTask);
   };
 
@@ -175,7 +191,11 @@ const handleTaskStatus = (id) => {
               >
                 + Add Task
               </Button>
-              <TaskList tasks={tasks} handleTaskDeletion={handleTaskDeletion} />
+              <TaskList
+                tasks={tasks}
+                handleTaskDeletion={handleTaskDeletion}
+                handleTaskPriorityChange={handleTaskPriorityChange}
+              />
             </Stack>
           </Col>
         </Row>
