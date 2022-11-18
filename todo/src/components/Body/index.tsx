@@ -11,12 +11,11 @@ import {
   ButtonGroup,
 } from "react-bootstrap";
 
-import { Modal } from "../Modal";
+import { Modal } from "../AddTaskModal";
 
 import { Task } from "../Task";
 import { TaskList } from "../TaskList";
 
-import "../Body/style.css";
 import "../Body/style.css";
 
 /* Date Selector */
@@ -25,37 +24,38 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { format } from "date-fns";
-import { format } from "date-fns";
 
 /* Random ID Generator */
 
 import { v4 as uuidv4 } from "uuid";
-import { v4 as uuidv4 } from "uuid";
-import { constants } from "zlib";
 
 /*******************COMPONENT****************************** */
 
 export function Body() {
   /*-------------View Selection-------------*/
-  /*-------------View Selection-------------*/
+
+  const [isTitleInputAvailable, setIsTitleInputAvailable] =
+    React.useState(true);
+
+  const handleIsTitleInputAvailable = (isTitleInputAvailable) => {
+    if (isTitleInputAvailable == true) {
+      setIsTitleInputAvailable(false);
+    } else {
+      setIsTitleInputAvailable(true);
+    }
+  };
 
   const [view, setView] = React.useState("Home");
 
   /*------------ADD TASK Modal Display------------*/
-  /*------------ADD TASK Modal Display------------*/
 
-  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = React.useState(false);
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = React.useState(false);
 
   /*------------Modal Inputs-------------*/
 
   /*Input Title*/
   const [inputTitle, setInputTitle] = React.useState("");
-  const [inputTitle, setInputTitle] = React.useState("");
 
-  const handleInputTitle = (e) => {
-    setInputTitle(e.target.value);
-  };
   const handleInputTitle = (e) => {
     setInputTitle(e.target.value);
   };
@@ -63,11 +63,7 @@ export function Body() {
   /*Input Description*/
 
   const [inputDescription, setInputDescription] = React.useState("");
-  const [inputDescription, setInputDescription] = React.useState("");
 
-  const handleInputDescription = (e) => {
-    setInputDescription(e.target.value);
-  };
   const handleInputDescription = (e) => {
     setInputDescription(e.target.value);
   };
@@ -75,15 +71,10 @@ export function Body() {
   /*Input Date*/
 
   const [inputDate, setInputDate] = React.useState(null);
-  const [inputDate, setInputDate] = React.useState(null);
 
   /*Format date */
 
   const handleDateFormat = (date) => {
-    let dateToString = date.toString();
-    let formatDate = dateToString.slice(4, 10);
-    return formatDate;
-  };
     let dateToString = date.toString();
     let formatDate = dateToString.slice(4, 10);
     return formatDate;
@@ -96,21 +87,9 @@ export function Body() {
   /* Set task Status */
 
   const [taskStatus, setTaskStatus] = React.useState("false");
-  const [inputPriority, setInputPriority] = React.useState("");
-
-  /* Set task Status */
-
-  const [taskStatus, setTaskStatus] = React.useState("false");
 
   /*Reset Modal */
 
-  const resetModal = () => {
-    setInputTitle(""),
-      setInputDate(null),
-      setInputDescription(""),
-      setInputPriority(""),
-      setIsAddTaskModalOpen(false);
-  };
   const resetModal = () => {
     setInputTitle(""),
       setInputDate(null),
@@ -141,39 +120,38 @@ export function Body() {
     inputDate,
     taskStatus
   ) => {
-    setTasks([
-      ...tasks,
-      {
-        id: uuidv4(),
-        taskTitle: inputTitle,
-        taskDescription: inputDescription,
-        priority: inputPriority,
-        date: handleDateFormat(inputDate),
-        completed: taskStatus,
-      },
-    ]);
+    if (inputPriority != "") {
+      setTasks([
+        ...tasks,
+        {
+          id: uuidv4(),
+          taskTitle: inputTitle,
+          taskDescription: inputDescription,
+          priority: inputPriority,
+          date: handleDateFormat(inputDate),
+          completed: taskStatus,
+        },
+      ]);
+      resetModal();
+    } else {
+      alert("Add a Priority");
+      console.log(inputPriority);
+    }
   };
-
   /* handle task Status */
-
   /*
-REVIEW FOR HELP
-
-const handleTaskStatus = (id) => {
+  const handleTaskStatus = (id) => {
     const refreshTask = tasks.map((task) => {
       if (task.id == id && task.completed == false) {
         return { ...task, completed: true };
       }
       if (task.id == id && task.completed == true) {
         return { ...task, completed: false };
-      } else {
-        return task;
       }
     });
     setTasks(refreshTask);
   };
-
-
+ */
   /* handle task deletion */
 
   const handleTaskDeletion = (id) => {
@@ -183,21 +161,38 @@ const handleTaskStatus = (id) => {
 
   /* handle task priority change */
 
-  const handleTaskPriorityChange = (color) => {
-    const refreshTask: any = tasks.map((task) => {
-      if (task.priority != color) {
-        return { ...task, priority: color };
-      }
-      if (task.priority != color) {
-        return { ...task, priority: color };
-      }
-      if (task.priority != color) {
-        return { ...task, priority: color };
+  const handleTaskPriorityChange = (id: string, color: string) => {
+    const refreshTask = tasks.map((task) => {
+      if (task.id === id) {
+        if (task.priority != color) {
+          return { ...task, priority: color };
+        } else {
+          return task;
+        }
+      } else {
+        return task;
       }
     });
     setTasks(refreshTask);
   };
 
+  /* Handle task Description change */
+  /*
+   const handleTaskDescriptionChange = (id: string) => {
+    const refreshTask = tasks.map((task) => {
+      if (task.id === id) {
+        if (task.priority != color) {
+          return { ...task, priority: color };
+        } else {
+          return task;
+        }
+      } else {
+        return task;
+      }
+    });
+    setTasks(refreshTask);
+  };
+ */
   /* TSX */
 
   return (
@@ -219,7 +214,6 @@ const handleTaskStatus = (id) => {
                 variant="secondary"
                 size="lg"
                 onClick={() => setIsAddTaskModalOpen(true)}
-                onClick={() => setIsAddTaskModalOpen(true)}
               >
                 + Add Task
               </Button>
@@ -235,10 +229,7 @@ const handleTaskStatus = (id) => {
 
       <Modal
         /*************MODAL ADD TASKS********************/
-        /*************MODAL ADD TASKS********************/
         title="Add New Task"
-        show={isAddTaskModalOpen}
-        onHide={() => setIsAddTaskModalOpen(false)}
         show={isAddTaskModalOpen}
         onHide={() => setIsAddTaskModalOpen(false)}
       >
@@ -252,14 +243,6 @@ const handleTaskStatus = (id) => {
               inputDate,
               taskStatus
             );
-            handleAddTask(
-              inputTitle,
-              inputDescription,
-              inputPriority,
-              inputDate,
-              taskStatus
-            );
-            resetModal();
           }}
         >
           <Form.Group controlId="newTask">
@@ -282,7 +265,6 @@ const handleTaskStatus = (id) => {
                 required
                 onChange={handleInputDescription}
                 value={inputDescription}
-                value={inputDescription}
               ></Form.Control>
             </div>
             <Row>
@@ -290,12 +272,6 @@ const handleTaskStatus = (id) => {
                 <Form.Text>Due Date</Form.Text>
 
                 <DatePicker
-                  selected={inputDate}
-                  onChange={(date) => setInputDate(date)}
-                  required
-                  dateFormat="dd/MM/yyyy"
-                  minDate={new Date()}
-                  value={inputDate}
                   selected={inputDate}
                   onChange={(date) => setInputDate(date)}
                   required
@@ -324,27 +300,8 @@ const handleTaskStatus = (id) => {
                   >
                     High
                   </Button>
-                  <Button
-                    onClick={() => setInputPriority("priority-green")}
-                    variant="success"
-                  >
-                    Low
-                  </Button>
-                  <Button
-                    onClick={() => setInputPriority("priority-yellow")}
-                    variant="warning"
-                  >
-                    Medium
-                  </Button>
-                  <Button
-                    onClick={() => setInputPriority("priority-red")}
-                    variant="danger"
-                  >
-                    High
-                  </Button>
                 </ButtonGroup>
               </Col>
-            </Row>
             </Row>
           </Form.Group>
           <div className="form-btn-layout">

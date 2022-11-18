@@ -122,8 +122,32 @@
 .edit-label{
   font-family: 'roboto';
   font-weight: 700;
+
 }
 
 .edit-modal-title{
 padding:0.5rem 0 0 1.25rem
+}
+
+.material-symbols-outlined {
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.edit-modal-categories{
+  padding-right: 5rem;
+}
+
+.layout-edit-modal{
+  display: flex;
+}
+
+.modal-edit-layout{
+  display: flex;
+  justify-content: space-between;
 }
