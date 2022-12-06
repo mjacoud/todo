@@ -30,33 +30,8 @@ import { format } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { addTasks, useTasks } from "../../redux/slicesTasks";
-import { AddTaskForm } from "../AddTaskForm";
 
-/*******************COMPONENT****************************** */
-
-export function Body() {
-  const tasksTeste = useSelector(useTasks);
-  /*-------------View Selection-------------*/
-
-  const [isTitleInputAvailable, setIsTitleInputAvailable] =
-    React.useState(true);
-
-  const handleIsTitleInputAvailable = (isTitleInputAvailable) => {
-    if (isTitleInputAvailable == true) {
-      setIsTitleInputAvailable(false);
-    } else {
-      setIsTitleInputAvailable(true);
-    }
-  };
-
-  const [view, setView] = React.useState("Home");
-
-  /*------------ADD TASK Modal Display------------*/
-
-  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = React.useState(false);
-
-  /*------------Modal Inputs-------------*/
-
+export function AddTaskForm() {
   /*Input Title*/
 
   const [inputTitle, setInputTitle] = React.useState("");
@@ -93,134 +68,54 @@ export function Body() {
 
   const [taskStatus, setTaskStatus] = React.useState("false");
 
-  /*Reset Modal */
+  /* Date Selector */
 
-  const resetModal = () => {
+  /* Reset ADD TASK MODAL */
+
+  const resetAddModal = () => {
     setInputTitle(""),
-      setInputDate(null),
       setInputDescription(""),
+      setInputDate(null),
       setInputPriority(""),
       setIsAddTaskModalOpen(false);
   };
+  /*------------ADD TASK Modal Display------------*/
+
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = React.useState(false);
+
+  /* DISPATCH */
 
   const dispatch = useDispatch();
 
-  /* handle add task*/
+  /* Handle Submit */
 
-  /* const handleAddTask = (
-    inputTitle,
-    inputDescription,
-    inputPriority,
-    inputDate,
-    taskStatus
-  ) => {
-    if (inputPriority != "") {
-      setTasks([
-        ...tasks,
-        {
+  const onSubmitTask = (e) => {
+    if (inputTitle && inputDescription && inputPriority && inputDate) {
+      dispatch(
+        addTasks({
           id: uuidv4(),
           taskTitle: inputTitle,
           taskDescription: inputDescription,
           priority: inputPriority,
           date: handleDateFormat(inputDate),
-          completed: taskStatus,
-        },
-      ]);
-      resetModal();
-    } else {
-      alert("Add a Priority");
-      console.log(inputPriority);
+          completed: false,
+        })
+      );
+      resetAddModal();
     }
   };
- */
-  /*   const handleTaskTitleChange = (id: string, inputTitle) => {
-    const refreshTask = tasks.map((task) => {
-      if (task.id === id) {
-        return { ...task, taskTitle: inputTitle };
-      } else {
-        return task;
-      }
-    });
-    setTasks(refreshTask);
-  };
- */
-  /* handle task Status */
-  /*
-  const handleTaskStatus = (id) => {
-    const refreshTask = tasks.map((task) => {
-      if (task.id == id && task.completed == false) {
-        return { ...task, completed: true };
-      }
-      if (task.id == id && task.completed == true) {
-        return { ...task, completed: false };
-      }
-    });
-    setTasks(refreshTask);
-  };
- */
-  /* handle task deletion */
-
-  /*   const handleTaskDeletion = (id) => {
-    const refreshTask = tasks.filter((task) => task.id != id);
-    setTasks(refreshTask);
-  };
- */
-  /* handle task priority change */
-
-  /*   const handleTaskPriorityChange = (id: string, color: string) => {
-    const refreshTask = tasks.map((task) => {
-      if (task.id === id) {
-        if (task.priority != color) {
-          return { ...task, priority: color };
-        } else {
-          return task;
-        }
-      } else {
-        return task;
-      }
-    });
-    setTasks(refreshTask);
-  };
- */
-  /* Handle task Description change */
-
-  /*  const handleTaskDescriptionChange = (id: string, newDescription: string) => {
-    const refreshTask = tasks.map((task) => {
-      if (task.id === id) {
-        setInputDescription(newDescription);
-      } else {
-        return task;
-      }
-    });
-    setTasks(refreshTask);
-  };
- */
-  /* TSX */
 
   return (
     <>
-      <Container fluid>
-        <Row className="body">
-          <Col xs="3" className="menu">
-            <div className="defaultView-menu">
-              <button className="defaultView-item">Home</button>
-              <button className="defaultView-item">Today</button>
-              <button className="defaultView-item">This Week</button>
-              <button className="defaultView-item">This Month</button>
-            </div>
-          </Col>
-
-          <Col className="index">
-            <Stack gap={4} className="taskMenu">
-              <AddTaskForm />
-              <TaskList />
-            </Stack>
-          </Col>
-        </Row>
-      </Container>
+      <Button
+        variant="secondary"
+        size="lg"
+        onClick={() => setIsAddTaskModalOpen(true)}
+      >
+        + Add Task
+      </Button>
 
       <Modal
-        /*************MODAL ADD TASKS********************/
         title="Add New Task"
         show={isAddTaskModalOpen}
         onHide={() => setIsAddTaskModalOpen(false)}
@@ -228,7 +123,6 @@ export function Body() {
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            dispatch(addTasks);
           }}
         >
           <Form.Group controlId="newTask">
@@ -291,7 +185,12 @@ export function Body() {
             </Row>
           </Form.Group>
           <div className="form-btn-layout">
-            <Button variant="primary" type="submit" size="lg">
+            <Button
+              variant="primary"
+              type="button"
+              size="lg"
+              onClick={onSubmitTask}
+            >
               Submit
             </Button>
           </div>

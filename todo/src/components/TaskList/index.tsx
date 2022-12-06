@@ -3,22 +3,24 @@ import React from "react";
 import { Task } from "../Task";
 
 import { v4 as uuidv4 } from "uuid";
+import { useTasks } from "../../redux/slicesTasks";
+import { useSelector } from "react-redux";
 
-export const TaskList = ({
-  tasks,
-  handleTaskStatus,
-  handleTaskDeletion,
-  handleTaskPriorityChange,
-}: any) => {
+export const TaskList = () => {
+  const tasksTeste = useSelector(useTasks);
+
   return (
     <>
-      {tasks.map((tasks) => (
+      {tasksTeste.map((tasks) => (
         <Task
-          tasks={tasks}
-          handleTaskStatus={handleTaskStatus}
-          handleTaskDeletion={handleTaskDeletion}
-          handleTaskPriorityChange={handleTaskPriorityChange}
           key={uuidv4()}
+          data={tasks}
+          handleTaskDeletion={undefined}
+          handleTaskPriorityChange={undefined}
+          handleInputTitle={undefined}
+          inputTitle={undefined}
+          setInputTitle={undefined}
+          handleTaskTitleChange={undefined}
         />
       ))}
     </>

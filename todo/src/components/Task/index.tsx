@@ -1,27 +1,20 @@
-import react from "react";
-import React, { Component, useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Stack,
-  Form,
-  ButtonGroup,
-} from "react-bootstrap";
+import React, { useState } from "react";
+import { Row, Col, Button, Form, ButtonGroup } from "react-bootstrap";
 
 import { Modal } from "../EditTaskModal";
 
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-import { format } from "date-fns";
+import { useSelector } from "react-redux";
+import { useTasks } from "../../redux/slicesTasks";
 
 export const Task = ({
-  tasks,
-  handleTaskStatus,
   handleTaskDeletion,
   handleTaskPriorityChange,
+  handleInputTitle,
+  inputTitle,
+  setInputTitle,
+  handleTaskTitleChange,
+  data,
 }) => {
   const [isChecked, setIsChecked] = useState(false);
 
@@ -59,10 +52,12 @@ export const Task = ({
   };
 
   /*---------------COMPONENT-----------------*/
+  const tasksTeste = useSelector(useTasks);
+  console.log(tasksTeste.map((tasks) => tasks.taskTitle));
 
   return (
     <>
-      <div className={`task ${tasks.priority}`}>
+      <div className={`task ${data.priority}`}>
         <div className="edit">
           <input
             type="checkbox"
@@ -70,11 +65,11 @@ export const Task = ({
             checked={isChecked}
           ></input>
           <div className={`task-title ${isChecked ? "task-completed" : ""}`}>
-            {tasks.taskTitle}
+            {data.taskTitle}
           </div>
         </div>
         <div className="edit">
-          <p className="format-date">{tasks.date}</p>
+          <p className="format-date">{data.date}</p>
           <a
             className="edit-layout"
             href=""
@@ -90,7 +85,7 @@ export const Task = ({
             href=""
             onClick={(e) => {
               e.preventDefault();
-              handleTaskDeletion(tasks.id);
+              handleTaskDeletion(data.id);
             }}
           >
             <img src="./src/assets/delete.png" className="edit-img"></img>
@@ -100,11 +95,15 @@ export const Task = ({
       {/* {/***************** EDIT MODAL ***************/}
 
       <Modal
-        title={tasks.taskTitle}
-        tasks={tasks}
+        title={data.taskTitle}
+        handleInputTitle={handleInputTitle}
         show={isEditTaskModalOpen}
+        inputTitle={inputTitle}
+        setInputTitle={setInputTitle}
         onHide={() => setIsEditTaskModalOpen(false)}
-        centered
+        handleTaskTitleChange={handleTaskTitleChange}
+        tasks={undefined}
+        setTasks={undefined}
       >
         <form
           onSubmit={(event) => {
@@ -131,7 +130,7 @@ export const Task = ({
                     as={isDescriptionInputAvailable ? "input" : "textarea"}
                     plaintext={isDescriptionInputAvailable}
                     readOnly={isDescriptionInputAvailable}
-                    value={tasks.taskDescription}
+                    value={data.taskDescription}
                     style={
                       isDescriptionInputAvailable
                         ? { width: "5rem" }
@@ -175,7 +174,7 @@ export const Task = ({
                   <Form.Control
                     plaintext
                     readOnly
-                    value={tasks.completed ? "Completed" : "Incomplete"}
+                    value={data.completed ? "Completed" : "Incomplete"}
                     style={{ width: "5rem" }}
                   />
                   <a href="">
@@ -194,7 +193,7 @@ export const Task = ({
                   <ButtonGroup vertical size="lg" aria-label="Priority">
                     <Button
                       onClick={() =>
-                        handleTaskPriorityChange(tasks.id, "priority-green")
+                        handleTaskPriorityChange(data.id, "priority-green")
                       }
                       variant="success"
                     >
@@ -202,7 +201,7 @@ export const Task = ({
                     </Button>
                     <Button
                       onClick={() =>
-                        handleTaskPriorityChange(tasks.id, "priority-yellow")
+                        handleTaskPriorityChange(data.id, "priority-yellow")
                       }
                       variant="warning"
                     >
@@ -210,7 +209,7 @@ export const Task = ({
                     </Button>
                     <Button
                       onClick={() => {
-                        handleTaskPriorityChange(tasks.id, "priority-red");
+                        handleTaskPriorityChange(data.id, "priority-red");
                       }}
                       variant="danger"
                     >
