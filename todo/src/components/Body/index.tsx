@@ -29,7 +29,7 @@ import { format } from "date-fns";
 
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
-import { addTasks, useTasks } from "../../redux/slicesTasks";
+import { addTask, useTasks } from "../../redux/slicesTasks";
 import { AddTaskForm } from "../AddTaskForm";
 
 /*******************COMPONENT****************************** */
@@ -93,46 +93,8 @@ export function Body() {
 
   const [taskStatus, setTaskStatus] = React.useState("false");
 
-  /*Reset Modal */
-
-  const resetModal = () => {
-    setInputTitle(""),
-      setInputDate(null),
-      setInputDescription(""),
-      setInputPriority(""),
-      setIsAddTaskModalOpen(false);
-  };
-
   const dispatch = useDispatch();
 
-  /* handle add task*/
-
-  /* const handleAddTask = (
-    inputTitle,
-    inputDescription,
-    inputPriority,
-    inputDate,
-    taskStatus
-  ) => {
-    if (inputPriority != "") {
-      setTasks([
-        ...tasks,
-        {
-          id: uuidv4(),
-          taskTitle: inputTitle,
-          taskDescription: inputDescription,
-          priority: inputPriority,
-          date: handleDateFormat(inputDate),
-          completed: taskStatus,
-        },
-      ]);
-      resetModal();
-    } else {
-      alert("Add a Priority");
-      console.log(inputPriority);
-    }
-  };
- */
   /*   const handleTaskTitleChange = (id: string, inputTitle) => {
     const refreshTask = tasks.map((task) => {
       if (task.id === id) {
@@ -167,7 +129,7 @@ export function Body() {
  */
   /* handle task priority change */
 
-  /*   const handleTaskPriorityChange = (id: string, color: string) => {
+  const handleTaskPriorityChange = (id: string, color: string) => {
     const refreshTask = tasks.map((task) => {
       if (task.id === id) {
         if (task.priority != color) {
@@ -181,7 +143,7 @@ export function Body() {
     });
     setTasks(refreshTask);
   };
- */
+
   /* Handle task Description change */
 
   /*  const handleTaskDescriptionChange = (id: string, newDescription: string) => {
@@ -228,7 +190,7 @@ export function Body() {
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            dispatch(addTasks);
+            dispatch(addTask);
           }}
         >
           <Form.Group controlId="newTask">

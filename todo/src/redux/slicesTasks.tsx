@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-interface Tasks {
+export interface Tasks {
   id: string;
   taskTitle: string;
   taskDescription: string;
@@ -33,16 +33,20 @@ const sliceTasks = createSlice({
   name: "Tasks",
   initialState: INITIAL_STATE,
   reducers: {
-    addTasks: (state, { payload }: PayloadAction<Tasks>) => {
+    addTask: (state, { payload }: PayloadAction<Tasks>) => {
       {
         [...state, state.push(payload)];
       }
+    },
+
+    deleteTask: (state, { payload }: PayloadAction<string>) => {
+      return state.filter((task) => task.id !== payload);
     },
   },
 });
 
 export default sliceTasks.reducer;
-export const { addTasks } = sliceTasks.actions;
+export const { addTask, deleteTask } = sliceTasks.actions;
 
 export const useTasks = (state: any) => {
   return state.tasks as Tasks[];

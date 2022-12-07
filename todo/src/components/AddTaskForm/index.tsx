@@ -29,7 +29,7 @@ import { format } from "date-fns";
 
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
-import { addTasks, useTasks } from "../../redux/slicesTasks";
+import { addTask, deleteTask, useTasks } from "../../redux/slicesTasks";
 
 export function AddTaskForm() {
   /*Input Title*/
@@ -89,10 +89,10 @@ export function AddTaskForm() {
 
   /* Handle Submit */
 
-  const onSubmitTask = (e) => {
+  const onSubmitTask = () => {
     if (inputTitle && inputDescription && inputPriority && inputDate) {
       dispatch(
-        addTasks({
+        addTask({
           id: uuidv4(),
           taskTitle: inputTitle,
           taskDescription: inputDescription,
@@ -104,6 +104,8 @@ export function AddTaskForm() {
       resetAddModal();
     }
   };
+
+  /* Handle Task Deletion */
 
   return (
     <>

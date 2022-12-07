@@ -4,18 +4,10 @@ import { Row, Col, Button, Form, ButtonGroup } from "react-bootstrap";
 import { Modal } from "../EditTaskModal";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { useSelector } from "react-redux";
-import { useTasks } from "../../redux/slicesTasks";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteTask, useTasks } from "../../redux/slicesTasks";
 
-export const Task = ({
-  handleTaskDeletion,
-  handleTaskPriorityChange,
-  handleInputTitle,
-  inputTitle,
-  setInputTitle,
-  handleTaskTitleChange,
-  data,
-}) => {
+export const Task = ({ data }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   /*------------EDIT TASK Modal Display------------*/
@@ -37,6 +29,19 @@ export const Task = ({
     }
   };
 
+  /*Dispatch */
+
+  const dispatch = useDispatch();
+
+  /* Handle Task Deletion */
+
+  const onDeleteTask = (e) => {
+    e.preventDefault();
+    dispatch(deleteTask(data.id));
+    console.log(data.id);
+  };
+
+  const taskList = useSelector(useTasks);
   /*------------EDIT TASK Date Modal Button ------------*/
 
   /*State*/
@@ -53,7 +58,7 @@ export const Task = ({
 
   /*---------------COMPONENT-----------------*/
   const tasksTeste = useSelector(useTasks);
-  console.log(tasksTeste.map((tasks) => tasks.taskTitle));
+  console.log(tasksTeste.length);
 
   return (
     <>
@@ -80,14 +85,7 @@ export const Task = ({
           >
             <img src="./src/assets/editing.png" className="edit-img"></img>
           </a>
-          <a
-            className="edit-layout"
-            href=""
-            onClick={(e) => {
-              e.preventDefault();
-              handleTaskDeletion(data.id);
-            }}
-          >
+          <a className="edit-layout" href="" onClick={onDeleteTask}>
             <img src="./src/assets/delete.png" className="edit-img"></img>
           </a>
         </div>
@@ -96,14 +94,8 @@ export const Task = ({
 
       <Modal
         title={data.taskTitle}
-        handleInputTitle={handleInputTitle}
         show={isEditTaskModalOpen}
-        inputTitle={inputTitle}
-        setInputTitle={setInputTitle}
         onHide={() => setIsEditTaskModalOpen(false)}
-        handleTaskTitleChange={handleTaskTitleChange}
-        tasks={undefined}
-        setTasks={undefined}
       >
         <form
           onSubmit={(event) => {
@@ -191,30 +183,9 @@ export const Task = ({
               >
                 <Col className="btn-priority">
                   <ButtonGroup vertical size="lg" aria-label="Priority">
-                    <Button
-                      onClick={() =>
-                        handleTaskPriorityChange(data.id, "priority-green")
-                      }
-                      variant="success"
-                    >
-                      Low
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        handleTaskPriorityChange(data.id, "priority-yellow")
-                      }
-                      variant="warning"
-                    >
-                      Medium
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        handleTaskPriorityChange(data.id, "priority-red");
-                      }}
-                      variant="danger"
-                    >
-                      High
-                    </Button>
+                    <Button variant="success">Low</Button>
+                    <Button variant="warning">Medium</Button>
+                    <Button variant="danger">High</Button>
                   </ButtonGroup>
                 </Col>
               </Form.Group>
