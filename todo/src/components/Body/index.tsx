@@ -29,7 +29,7 @@ import { format } from "date-fns";
 
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, useTasks } from "../../redux/slicesTasks";
+import { addTask, useTasks } from "../../redux/Slices/slicesTasks";
 import { AddTaskForm } from "../AddTaskForm";
 
 /*******************COMPONENT****************************** */
@@ -129,7 +129,7 @@ export function Body() {
  */
   /* handle task priority change */
 
-  const handleTaskPriorityChange = (id: string, color: string) => {
+  /*   const handleTaskPriorityChange = (id: string, color: string) => {
     const refreshTask = tasks.map((task) => {
       if (task.id === id) {
         if (task.priority != color) {
@@ -143,7 +143,7 @@ export function Body() {
     });
     setTasks(refreshTask);
   };
-
+ */
   /* Handle task Description change */
 
   /*  const handleTaskDescriptionChange = (id: string, newDescription: string) => {

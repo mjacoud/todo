@@ -3,13 +3,10 @@ import React from "react";
 import { Task } from "../Task";
 
 import { v4 as uuidv4 } from "uuid";
-import { Tasks, useTasks } from "../../redux/slicesTasks";
+import { Tasks, useTasks } from "../../redux/Slices/slicesTasks";
 import { useSelector } from "react-redux";
 
 export const TaskList = () => {
-  const useTasks = (state: any) => {
-    return state.tasks as Tasks[];
-  };
   const taskList = useSelector(useTasks);
 
   return (

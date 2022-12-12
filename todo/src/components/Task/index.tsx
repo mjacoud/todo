@@ -5,7 +5,12 @@ import { Modal } from "../EditTaskModal";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteTask, useTasks } from "../../redux/slicesTasks";
+import {
+  deleteTask,
+  useTasks,
+  updateTaskDescription,
+  updateTaskPriority,
+} from "../../redux/Slices/slicesTasks";
 
 export const Task = ({ data }) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -16,11 +21,23 @@ export const Task = ({ data }) => {
 
   /*------------EDIT TASK Description Modal Button ------------*/
 
-  /*State*/
+  /*Dispatch */
+
+  const dispatch = useDispatch();
+
+  /*----------------- CHANGE DESCRIPTION -------------*/
+
+  /* STATE - DESCRIPTION MODAL*/
+
   const [isDescriptionInputAvailable, setIsDescriptionInputAvailable] =
     React.useState(true);
 
-  /*Handler*/
+  /* STATE - DESCRIPTION UPDATE */
+
+  const [newDescription, setNewDescription] = useState(data.taskDescription);
+
+  /* HANDLER - EDIT DESCRIPTION INPUT*/
+
   const handleIsDescriptionInputAvailable = (isDescriptionInputAvailable) => {
     if (isDescriptionInputAvailable == true) {
       setIsDescriptionInputAvailable(false);
@@ -29,19 +46,33 @@ export const Task = ({ data }) => {
     }
   };
 
-  /*Dispatch */
+  /* DISPATCH - EDIT DESCRIPTION */
+  dispatch(updateTaskDescription({ ...data, taskDescription: newDescription }));
 
-  const dispatch = useDispatch();
+  /* HANDLER - CHANGE EDIT DESCRIPTION STATE */
 
-  /* Handle Task Deletion */
+  const handleTaskDescriptionUpdate = (e) => {
+    e.preventDefault();
+    setNewDescription(e.target.value);
+  };
+
+  /*----------------- CHANGE PRIORITY -------------*/
+
+  /* STATE - PRIORITY UPDATE */
+
+  const [newPriority, setNewPriority] = useState(data.priority);
+
+  const onChangePriority = () => {
+    dispatch(updateTaskPriority(data.id));
+  };
+
+  /*----------------- DELETE TASK -------------*/
 
   const onDeleteTask = (e) => {
     e.preventDefault();
     dispatch(deleteTask(data.id));
-    console.log(data.id);
   };
 
-  const taskList = useSelector(useTasks);
   /*------------EDIT TASK Date Modal Button ------------*/
 
   /*State*/
@@ -58,11 +89,10 @@ export const Task = ({ data }) => {
 
   /*---------------COMPONENT-----------------*/
   const tasksTeste = useSelector(useTasks);
-  console.log(tasksTeste.length);
 
   return (
     <>
-      <div className={`task ${data.priority}`}>
+      <div className={`task ${newPriority}`}>
         <div className="edit">
           <input
             type="checkbox"
@@ -96,10 +126,11 @@ export const Task = ({ data }) => {
         title={data.taskTitle}
         show={isEditTaskModalOpen}
         onHide={() => setIsEditTaskModalOpen(false)}
+        data={data}
       >
         <form
-          onSubmit={(event) => {
-            event.preventDefault();
+          onSubmit={(e) => {
+            e.preventDefault();
           }}
         >
           <div className="modal-edit-layout">
@@ -122,7 +153,8 @@ export const Task = ({ data }) => {
                     as={isDescriptionInputAvailable ? "input" : "textarea"}
                     plaintext={isDescriptionInputAvailable}
                     readOnly={isDescriptionInputAvailable}
-                    value={data.taskDescription}
+                    value={newDescription}
+                    onChange={handleTaskDescriptionUpdate}
                     style={
                       isDescriptionInputAvailable
                         ? { width: "5rem" }
@@ -132,10 +164,16 @@ export const Task = ({ data }) => {
                   <a
                     href=""
                     onClick={(e) => {
+                      e.preventDefault();
                       handleIsDescriptionInputAvailable(
                         isDescriptionInputAvailable
                       );
-                      e.preventDefault();
+                      dispatch(
+                        updateTaskDescription({
+                          ...data,
+                          taskDescription: newDescription,
+                        })
+                      );
                     }}
                   >
                     <span className="material-symbols-outlined">edit</span>
@@ -183,9 +221,36 @@ export const Task = ({ data }) => {
               >
                 <Col className="btn-priority">
                   <ButtonGroup vertical size="lg" aria-label="Priority">
-                    <Button variant="success">Low</Button>
-                    <Button variant="warning">Medium</Button>
-                    <Button variant="danger">High</Button>
+                    <Button
+                      variant="success"
+                      onClick={() => {
+                        setNewPriority("priority-green");
+                        onChangePriority;
+                        setIsEditTaskModalOpen(false);
+                      }}
+                    >
+                      Low
+                    </Button>
+                    <Button
+                      variant="warning"
+                      onClick={() => {
+                        setNewPriority("priority-yellow");
+                        onChangePriority;
+                        setIsEditTaskModalOpen(false);
+                      }}
+                    >
+                      Medium
+                    </Button>
+                    <Button
+                      variant="danger"
+                      onClick={() => {
+                        setNewPriority("priority-red");
+                        onChangePriority;
+                        setIsEditTaskModalOpen(false);
+                      }}
+                    >
+                      High
+                    </Button>
                   </ButtonGroup>
                 </Col>
               </Form.Group>

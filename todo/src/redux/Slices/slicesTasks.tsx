@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
 export interface Tasks {
@@ -42,11 +42,29 @@ const sliceTasks = createSlice({
     deleteTask: (state, { payload }: PayloadAction<string>) => {
       return state.filter((task) => task.id !== payload);
     },
+    updateTaskDescription: (state, { payload }: PayloadAction<Tasks>) => {
+      const getIndex = state.findIndex((task) => task.id == payload.id);
+      [...state, (state[getIndex].taskDescription = payload.taskDescription)];
+    },
+    updateTaskTitle: (state, { payload }: PayloadAction<Tasks>) => {
+      const getIndex = state.findIndex((task) => task.id == payload.id);
+      [...state, (state[getIndex].taskTitle = payload.taskTitle)];
+    },
+    updateTaskPriority: (state, { payload }: PayloadAction<Tasks>) => {
+      const getIndex = state.findIndex((task) => task.id == payload.id);
+      [...state, (state[getIndex].priority = payload.priority)];
+    },
   },
 });
 
 export default sliceTasks.reducer;
-export const { addTask, deleteTask } = sliceTasks.actions;
+export const {
+  addTask,
+  deleteTask,
+  updateTaskDescription,
+  updateTaskTitle,
+  updateTaskPriority,
+} = sliceTasks.actions;
 
 export const useTasks = (state: any) => {
   return state.tasks as Tasks[];

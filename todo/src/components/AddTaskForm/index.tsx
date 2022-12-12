@@ -29,7 +29,7 @@ import { format } from "date-fns";
 
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, deleteTask, useTasks } from "../../redux/slicesTasks";
+import { addTask, deleteTask, useTasks } from "../../redux/Slices/slicesTasks";
 
 export function AddTaskForm() {
   /*Input Title*/
@@ -104,8 +104,6 @@ export function AddTaskForm() {
       resetAddModal();
     }
   };
-
-  /* Handle Task Deletion */
 
   return (
     <>
