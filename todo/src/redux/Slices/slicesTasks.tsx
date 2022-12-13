@@ -16,7 +16,7 @@ const INITIAL_STATE: Tasks[] = [
     taskTitle: "correr",
     taskDescription: "Walk Fast",
     priority: "priority-green",
-    date: "Nov 10",
+    date: "Dec 20 2022",
     completed: false,
   },
   {
@@ -24,7 +24,7 @@ const INITIAL_STATE: Tasks[] = [
     taskTitle: "Nadar",
     taskDescription: "Walk Fast",
     priority: "priority-yellow",
-    date: "Nov 10",
+    date: "Dec 14 2022",
     completed: false,
   },
 ];
@@ -54,6 +54,10 @@ const sliceTasks = createSlice({
       const getIndex = state.findIndex((task) => task.id == payload.id);
       [...state, (state[getIndex].priority = payload.priority)];
     },
+    updateTaskDueDate: (state, { payload }: PayloadAction<Tasks>) => {
+      const getIndex = state.findIndex((task) => task.id == payload.id);
+      [...state, (state[getIndex].date = payload.date)];
+    },
   },
 });
 
@@ -64,6 +68,7 @@ export const {
   updateTaskDescription,
   updateTaskTitle,
   updateTaskPriority,
+  updateTaskDueDate,
 } = sliceTasks.actions;
 
 export const useTasks = (state: any) => {

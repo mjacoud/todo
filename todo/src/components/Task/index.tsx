@@ -1,16 +1,27 @@
 import React, { useState } from "react";
-import { Row, Col, Button, Form, ButtonGroup } from "react-bootstrap";
 
+/* REACT BOOTSTRAP */
+
+import { Row, Col, Button, Form, ButtonGroup } from "react-bootstrap";
 import { Modal } from "../EditTaskModal";
 
-import "react-datepicker/dist/react-datepicker.css";
+/* REDUX */
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteTask,
   useTasks,
   updateTaskDescription,
   updateTaskPriority,
+  updateTaskDueDate,
 } from "../../redux/Slices/slicesTasks";
+
+/* DATE SELECTOR */
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+/* COMPONENTE */
 
 export const Task = ({ data }) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -18,7 +29,6 @@ export const Task = ({ data }) => {
   /*------------EDIT TASK Modal Display------------*/
 
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = React.useState(false);
-
   /*------------EDIT TASK Description Modal Button ------------*/
 
   /*Dispatch */
@@ -27,7 +37,7 @@ export const Task = ({ data }) => {
 
   /*----------------- CHANGE DESCRIPTION -------------*/
 
-  /* STATE - DESCRIPTION MODAL*/
+  /* STATE - DESCRIPTION INPUT*/
 
   const [isDescriptionInputAvailable, setIsDescriptionInputAvailable] =
     React.useState(true);
@@ -45,10 +55,6 @@ export const Task = ({ data }) => {
       setIsDescriptionInputAvailable(true);
     }
   };
-
-  /* DISPATCH - EDIT DESCRIPTION */
-  dispatch(updateTaskDescription({ ...data, taskDescription: newDescription }));
-
   /* HANDLER - CHANGE EDIT DESCRIPTION STATE */
 
   const handleTaskDescriptionUpdate = (e) => {
@@ -75,16 +81,40 @@ export const Task = ({ data }) => {
 
   /*------------EDIT TASK Date Modal Button ------------*/
 
-  /*State*/
-  const [isDateInputAvailable, setIsDateInputAvailable] = React.useState(true);
+  /* STATE - DATE UPDATE */
 
-  /*Handler*/
-  const handleIsDateInputAvailable = (isDateInputAvailable) => {
-    if (isDateInputAvailable == true) {
-      setIsDateInputAvailable(false);
-    } else {
-      setIsDateInputAvailable(true);
-    }
+  const [newDate, setNewDate] = useState(new Date(data.date));
+  console.log(data.date, "1");
+  console.log(newDate, "2");
+  /* TRANSFORM - FORMAT DATE */
+
+  /*   const transformDate = (date) => {
+    let getDay = date.slice(5, 7);
+    let getMonth = date.slice(0, 3);
+    let getYear = date.slice(8, 12);
+    let monthToLowercase = getMonth.toLowerCase();
+    let months = [
+      "jan",
+      "feb",
+      "mar",
+      "apr",
+      "may",
+      "jun",
+      "jul",
+      "aug",
+      "sep",
+      "oct",
+      "nov",
+      "dec",
+    ];
+    let monthInNumber = months.indexOf(monthToLowercase);
+    return
+  }; */
+
+  const handleDateFormat = (date) => {
+    let dateToString = date.toString();
+    let formatDate = dateToString.slice(4, 15);
+    return formatDate;
   };
 
   /*---------------COMPONENT-----------------*/
@@ -185,15 +215,21 @@ export const Task = ({ data }) => {
                   Date
                 </Form.Label>
                 <Col className="layout-edit-modal">
-                  <a
-                    href=""
-                    onClick={(e) => {
-                      handleIsDateInputAvailable(isDateInputAvailable);
-                      e.preventDefault();
+                  <DatePicker
+                    selected={newDate}
+                    onChange={(date) => {
+                      setNewDate(date);
+                      dispatch(
+                        updateTaskDueDate({
+                          ...data,
+                          date: handleDateFormat(date),
+                        })
+                      );
                     }}
-                  >
-                    <span className="material-symbols-outlined">edit</span>
-                  </a>
+                    dateFormat="dd/MM/yyyy"
+                    minDate={new Date(data.date)}
+                    value={newDate}
+                  />
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="editTaskStatus">
@@ -261,3 +297,6 @@ export const Task = ({ data }) => {
     </>
   );
 };
+function parseISO(date: any) {
+  throw new Error("Function not implemented.");
+}

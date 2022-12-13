@@ -56,7 +56,7 @@ export function AddTaskForm() {
 
   const handleDateFormat = (date) => {
     let dateToString = date.toString();
-    let formatDate = dateToString.slice(4, 10);
+    let formatDate = dateToString.slice(4, 15);
     return formatDate;
   };
 
