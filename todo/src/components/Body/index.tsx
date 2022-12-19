@@ -13,7 +13,6 @@ import {
 
 import { Modal } from "../AddTaskModal";
 
-import { Task } from "../Task";
 import { TaskList } from "../TaskList";
 
 import "../Body/style.css";
@@ -22,8 +21,6 @@ import "../Body/style.css";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-import { format } from "date-fns";
 
 /* Random ID Generator */
 
@@ -35,19 +32,8 @@ import { AddTaskForm } from "../AddTaskForm";
 /*******************COMPONENT****************************** */
 
 export function Body() {
-  const tasksTeste = useSelector(useTasks);
+  const taskList = useSelector(useTasks);
   /*-------------View Selection-------------*/
-
-  const [isTitleInputAvailable, setIsTitleInputAvailable] =
-    React.useState(true);
-
-  const handleIsTitleInputAvailable = (isTitleInputAvailable) => {
-    if (isTitleInputAvailable == true) {
-      setIsTitleInputAvailable(false);
-    } else {
-      setIsTitleInputAvailable(true);
-    }
-  };
 
   const [view, setView] = React.useState("Home");
 
@@ -77,87 +63,7 @@ export function Body() {
 
   const [inputDate, setInputDate] = React.useState(null);
 
-  /*Format date */
-
-  const handleDateFormat = (date) => {
-    let dateToString = date.toString();
-    let formatDate = dateToString.slice(4, 10);
-    return formatDate;
-  };
-
-  /*input Priority */
-
-  const [inputPriority, setInputPriority] = React.useState("");
-
-  /* Set task Status */
-
-  const [taskStatus, setTaskStatus] = React.useState("false");
-
   const dispatch = useDispatch();
-
-  /*   const handleTaskTitleChange = (id: string, inputTitle) => {
-    const refreshTask = tasks.map((task) => {
-      if (task.id === id) {
-        return { ...task, taskTitle: inputTitle };
-      } else {
-        return task;
-      }
-    });
-    setTasks(refreshTask);
-  };
- */
-  /* handle task Status */
-  /*
-  const handleTaskStatus = (id) => {
-    const refreshTask = tasks.map((task) => {
-      if (task.id == id && task.completed == false) {
-        return { ...task, completed: true };
-      }
-      if (task.id == id && task.completed == true) {
-        return { ...task, completed: false };
-      }
-    });
-    setTasks(refreshTask);
-  };
- */
-  /* handle task deletion */
-
-  /*   const handleTaskDeletion = (id) => {
-    const refreshTask = tasks.filter((task) => task.id != id);
-    setTasks(refreshTask);
-  };
- */
-  /* handle task priority change */
-
-  /*   const handleTaskPriorityChange = (id: string, color: string) => {
-    const refreshTask = tasks.map((task) => {
-      if (task.id === id) {
-        if (task.priority != color) {
-          return { ...task, priority: color };
-        } else {
-          return task;
-        }
-      } else {
-        return task;
-      }
-    });
-    setTasks(refreshTask);
-  };
- */
-  /* Handle task Description change */
-
-  /*  const handleTaskDescriptionChange = (id: string, newDescription: string) => {
-    const refreshTask = tasks.map((task) => {
-      if (task.id === id) {
-        setInputDescription(newDescription);
-      } else {
-        return task;
-      }
-    });
-    setTasks(refreshTask);
-  };
- */
-  /* TSX */
 
   return (
     <>
@@ -165,7 +71,10 @@ export function Body() {
         <Row className="body">
           <Col xs="3" className="menu">
             <div className="defaultView-menu">
-              <button className="defaultView-item">Home</button>
+              <button className="defaultView-item">
+                Home{" "}
+                <div className="NumberOfTasks"> {`${taskList.length}`}</div>
+              </button>
               <button className="defaultView-item">Today</button>
               <button className="defaultView-item">This Week</button>
               <button className="defaultView-item">This Month</button>
@@ -230,24 +139,9 @@ export function Body() {
               </Col>
               <Col className="btn-priority">
                 <ButtonGroup size="lg" aria-label="Priority">
-                  <Button
-                    onClick={() => setInputPriority("priority-green")}
-                    variant="success"
-                  >
-                    Low
-                  </Button>
-                  <Button
-                    onClick={() => setInputPriority("priority-yellow")}
-                    variant="warning"
-                  >
-                    Medium
-                  </Button>
-                  <Button
-                    onClick={() => setInputPriority("priority-red")}
-                    variant="danger"
-                  >
-                    High
-                  </Button>
+                  <Button>Low</Button>
+                  <Button>Medium</Button>
+                  <Button>High</Button>
                 </ButtonGroup>
               </Col>
             </Row>

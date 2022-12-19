@@ -58,6 +58,10 @@ const sliceTasks = createSlice({
       const getIndex = state.findIndex((task) => task.id == payload.id);
       [...state, (state[getIndex].date = payload.date)];
     },
+    updateTaskCompletion: (state, { payload }: PayloadAction<Tasks>) => {
+      const getIndex = state.findIndex((task) => task.id == payload.id);
+      [...state, (state[getIndex].completed = payload.completed)];
+    },
   },
 });
 
@@ -69,6 +73,7 @@ export const {
   updateTaskTitle,
   updateTaskPriority,
   updateTaskDueDate,
+  updateTaskCompletion,
 } = sliceTasks.actions;
 
 export const useTasks = (state: any) => {

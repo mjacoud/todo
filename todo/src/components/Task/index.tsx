@@ -14,6 +14,7 @@ import {
   updateTaskDescription,
   updateTaskPriority,
   updateTaskDueDate,
+  updateTaskCompletion,
 } from "../../redux/Slices/slicesTasks";
 
 /* DATE SELECTOR */
@@ -24,11 +25,10 @@ import "react-datepicker/dist/react-datepicker.css";
 /* COMPONENTE */
 
 export const Task = ({ data }) => {
-  const [isChecked, setIsChecked] = useState(false);
-
   /*------------EDIT TASK Modal Display------------*/
 
   const [isEditTaskModalOpen, setIsEditTaskModalOpen] = React.useState(false);
+
   /*------------EDIT TASK Description Modal Button ------------*/
 
   /*Dispatch */
@@ -84,32 +84,8 @@ export const Task = ({ data }) => {
   /* STATE - DATE UPDATE */
 
   const [newDate, setNewDate] = useState(new Date(data.date));
-  console.log(data.date, "1");
-  console.log(newDate, "2");
-  /* TRANSFORM - FORMAT DATE */
 
-  /*   const transformDate = (date) => {
-    let getDay = date.slice(5, 7);
-    let getMonth = date.slice(0, 3);
-    let getYear = date.slice(8, 12);
-    let monthToLowercase = getMonth.toLowerCase();
-    let months = [
-      "jan",
-      "feb",
-      "mar",
-      "apr",
-      "may",
-      "jun",
-      "jul",
-      "aug",
-      "sep",
-      "oct",
-      "nov",
-      "dec",
-    ];
-    let monthInNumber = months.indexOf(monthToLowercase);
-    return
-  }; */
+  /* TRANSFORM - FORMAT DATE */
 
   const handleDateFormat = (date) => {
     let dateToString = date.toString();
@@ -117,8 +93,15 @@ export const Task = ({ data }) => {
     return formatDate;
   };
 
+  /*----------------- CHANGE TASK COMPLETION -------------*/
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  /* HANDLER - CHANGE TASK COMPLETION */
+
+  const handleCompletion = (e) => {};
+
   /*---------------COMPONENT-----------------*/
-  const tasksTeste = useSelector(useTasks);
 
   return (
     <>
@@ -126,8 +109,13 @@ export const Task = ({ data }) => {
         <div className="edit">
           <input
             type="checkbox"
-            onChange={(e) => setIsChecked(e.target.checked)}
-            checked={isChecked}
+            onChange={(e) => {
+              setIsChecked(!data.completed);
+              console.log(isChecked);
+              console.log(e.target.checked);
+              console.log(data.completed);
+              dispatch(updateTaskCompletion({ ...data, completed: isChecked }));
+            }}
           ></input>
           <div className={`task-title ${isChecked ? "task-completed" : ""}`}>
             {data.taskTitle}
@@ -297,6 +285,3 @@ export const Task = ({ data }) => {
     </>
   );
 };
-function parseISO(date: any) {
-  throw new Error("Function not implemented.");
-}
