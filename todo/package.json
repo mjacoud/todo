@@ -4,10 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "coverage": "vitest run --coverage",
+    "dev": "vite"
+},
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
     "bootstrap": "^5.2.0",
@@ -19,9 +21,12 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@testing-library/react": "^13.4.0",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.0",
-    "vite": "^3.0.0"
+    "jsdom": "^20.0.3",
+    "vite": "^3.0.0",
+    "vitest": "^0.26.2"
   }
 }

@@ -5,15 +5,16 @@ import { Task } from "../Task";
 import { v4 as uuidv4 } from "uuid";
 import { Tasks, useTasks } from "../../redux/Slices/slicesTasks";
 import { useSelector } from "react-redux";
+import { useViews } from "../../redux/Slices/slicesViews";
 
 export const TaskList = () => {
-  const taskList = useSelector(useTasks);
+  const taskList = useSelector(useViews);
 
   return (
     <>
-      {taskList.map((tasks) => (
-        <Task key={uuidv4()} data={tasks} />
-      ))}
+      {taskList.map((view) =>
+        view.view.map((task) => <Task key={uuidv4()} data={task} />)
+      )}
     </>
   );
 };

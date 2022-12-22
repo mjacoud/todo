@@ -10,7 +10,6 @@ import { Modal } from "../EditTaskModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteTask,
-  useTasks,
   updateTaskDescription,
   updateTaskPriority,
   updateTaskDueDate,

@@ -17,6 +17,10 @@ import { TaskList } from "../TaskList";
 
 import "../Body/style.css";
 
+/* Slices */
+
+import { useViews } from "../../redux/Slices/slicesViews";
+
 /* Date Selector */
 
 import DatePicker from "react-datepicker";
@@ -28,6 +32,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask, useTasks } from "../../redux/Slices/slicesTasks";
 import { AddTaskForm } from "../AddTaskForm";
+import { ViewList } from "../ViewList";
 
 /*******************COMPONENT****************************** */
 
@@ -71,13 +76,7 @@ export function Body() {
         <Row className="body">
           <Col xs="3" className="menu">
             <div className="defaultView-menu">
-              <button className="defaultView-item">
-                Home{" "}
-                <div className="NumberOfTasks"> {`${taskList.length}`}</div>
-              </button>
-              <button className="defaultView-item">Today</button>
-              <button className="defaultView-item">This Week</button>
-              <button className="defaultView-item">This Month</button>
+              <ViewList />
             </div>
           </Col>
 
